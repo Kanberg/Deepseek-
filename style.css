@@ -1,10 +1,3 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
 :root {
     --primary: #6a11cb;
     --secondary: #2575fc;
@@ -15,6 +8,27 @@
     --success: #00b894;
     --warning: #fdcb6e;
     --error: #ff7675;
+    --code-bg: #1e1e2e;
+    --code-text: #e2e2e2;
+    --line-numbers: #6c757d;
+    --border: rgba(255, 255, 255, 0.1);
+}
+
+.light-theme {
+    --dark: #f8f9fa;
+    --darker: #e9ecef;
+    --light: #1a1a2e;
+    --code-bg: #ffffff;
+    --code-text: #333333;
+    --line-numbers: #adb5bd;
+    --border: rgba(0, 0, 0, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
@@ -22,6 +36,7 @@ body {
     color: var(--light);
     min-height: 100vh;
     overflow-x: hidden;
+    transition: all 0.3s ease;
 }
 
 .header {
@@ -45,11 +60,43 @@ body {
     opacity: 0.9;
 }
 
+.examples {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 0 20px;
+}
+
+.example-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 14px;
+    backdrop-filter: blur(10px);
+}
+
+.example-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
 .container {
     display: flex;
     min-height: calc(100vh - 180px);
     padding: 0 20px 20px;
     gap: 20px;
+}
+
+@media (max-width: 1024px) {
+    .container {
+        flex-direction: column;
+    }
 }
 
 .editor-panel {
@@ -79,7 +126,7 @@ body {
 .panel-header {
     padding: 15px 20px;
     background: linear-gradient(135deg, var(--primary), var(--secondary));
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--border);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -123,19 +170,49 @@ body {
     background: #1a67e8;
 }
 
+.theme-toggle {
+    background: transparent;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+    margin-left: 10px;
+}
+
+.theme-toggle:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
 .editor-container {
     flex: 1;
     position: relative;
     overflow: hidden;
+    display: flex;
+}
+
+.line-numbers {
+    width: 50px;
+    background: rgba(22, 22, 36, 0.9);
+    color: var(--line-numbers);
+    padding: 20px 10px;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 15px;
+    line-height: 1.6;
+    text-align: right;
+    overflow: hidden;
+    border-right: 1px solid var(--border);
+    user-select: none;
 }
 
 #code-editor {
-    width: 100%;
-    height: 100%;
-    background: rgba(22, 22, 36, 0.9);
-    color: #e2e2e2;
+    flex: 1;
+    background: var(--code-bg);
+    color: var(--code-text);
     border: none;
-    padding: 20px 20px 20px 60px;
+    padding: 20px;
     font-family: 'Consolas', 'Monaco', monospace;
     font-size: 15px;
     line-height: 1.6;
@@ -143,6 +220,7 @@ body {
     outline: none;
     tab-size: 4;
     overflow: auto;
+    transition: all 0.3s;
 }
 
 .preview-container {
@@ -163,6 +241,27 @@ body {
     overflow: auto;
 }
 
+.python-version-info {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid var(--primary);
+}
+
+.python-version-info h4 {
+    color: var(--primary);
+    margin-bottom: 10px;
+}
+
+.python-version-info ul {
+    margin-left: 20px;
+}
+
+.python-version-info li {
+    margin-bottom: 5px;
+}
+
 .status-bar {
     padding: 12px 20px;
     background: linear-gradient(135deg, var(--primary), var(--secondary));
@@ -176,7 +275,7 @@ body {
 .console {
     height: 200px;
     background: rgba(22, 22, 36, 0.9);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid var(--border);
     padding: 15px;
     font-family: 'Consolas', monospace;
     font-size: 14px;
@@ -186,177 +285,138 @@ body {
 .console-output {
     color: #cccccc;
     white-space: pre-wrap;
+    line-height: 1.4;
 }
 
 .console-error {
     color: var(--error);
+    background: rgba(255, 118, 117, 0.1);
+    padding: 5px;
+    border-radius: 4px;
+    margin: 2px 0;
 }
 
-.theme-toggle {
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: white;
-    padding: 6px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 13px;
-    transition: all 0.3s;
-}
-
-.theme-toggle:hover {
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.line-numbers {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 50px;
-    height: 100%;
-    background: rgba(22, 22, 36, 0.9);
-    color: #6c757d;
-    text-align: right;
-    padding: 20px 5px;
-    font-family: 'Consolas', monospace;
-    font-size: 15px;
-    line-height: 1.6;
-    border-right: 1px solid rgba(255, 255, 255, 0.1);
-    user-select: none;
-    overflow: hidden;
+.console-success {
+    color: var(--success);
+    background: rgba(0, 184, 148, 0.1);
+    padding: 5px;
+    border-radius: 4px;
+    margin: 2px 0;
 }
 
 .notification {
     position: fixed;
-    bottom: 20px;
+    top: 20px;
     right: 20px;
+    padding: 15px 20px;
     background: var(--success);
     color: white;
-    padding: 12px 18px;
     border-radius: 8px;
-    font-size: 14px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    display: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     z-index: 1000;
-    transition: opacity 0.3s;
+    display: none;
+    animation: slideIn 0.3s ease;
 }
 
 .notification.error {
     background: var(--error);
 }
 
-.examples {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 0 20px;
-}
-
-.example-btn {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: all 0.3s;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-.example-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
 
 .footer {
+    padding: 15px;
     text-align: center;
-    padding: 20px;
+    background: rgba(0, 0, 0, 0.2);
     color: rgba(255, 255, 255, 0.7);
     font-size: 14px;
-    margin-top: 20px;
 }
 
-/* Анимации */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+/* Стили для полноэкранного режима */
+.preview-container:fullscreen {
+    width: 100%;
+    height: 100%;
 }
 
-.container {
-    animation: fadeIn 0.5s ease-out;
+.preview-container:-webkit-full-screen {
+    width: 100%;
+    height: 100%;
 }
 
-/* Адаптивность */
-@media (max-width: 1200px) {
-    .container {
-        flex-direction: column;
-        height: auto;
+.preview-container:-moz-full-screen {
+    width: 100%;
+    height: 100%;
+}
+
+.preview-container:-ms-fullscreen {
+    width: 100%;
+    height: 100%;
+}
+
+/* Стили для синтаксиса Python */
+.python-keyword {
+    color: #ff79c6;
+    font-weight: bold;
+}
+
+.python-string {
+    color: #f1fa8c;
+}
+
+.python-comment {
+    color: #6272a4;
+    font-style: italic;
+}
+
+.python-function {
+    color: #50fa7b;
+}
+
+.python-number {
+    color: #bd93f9;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 24px;
     }
     
-    .editor-panel, .preview-panel {
-        min-height: 500px;
+    .header p {
+        font-size: 14px;
     }
-}
-
-.turtle-canvas {
-    border: 2px solid #ccc;
-    margin: 10px 0;
-}
-
-/* Стили для светлой темы */
-body.light-theme {
-    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-    color: #212529;
-}
-
-body.light-theme .editor-panel,
-body.light-theme .preview-panel {
-    background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-}
-
-body.light-theme .panel-header {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-}
-
-body.light-theme #code-editor {
-    background: rgba(248, 249, 250, 0.9);
-    color: #212529;
-}
-
-body.light-theme .line-numbers {
-    background: rgba(233, 236, 239, 0.9);
-    color: #6c757d;
-}
-
-body.light-theme .console {
-    background: rgba(248, 249, 250, 0.9);
-    border-top: 1px solid #dee2e6;
-}
-
-body.light-theme .console-output {
-    color: #495057;
-}
-
-body.light-theme .status-bar {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-}
-
-body.light-theme .theme-toggle {
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    color: #495057;
-}
-
-body.light-theme .theme-toggle:hover {
-    background: rgba(0, 0, 0, 0.05);
-}
-
-body.light-theme .example-btn {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-}
-
-body.light-theme .footer {
-    color: rgba(0, 0, 0, 0.6);
+    
+    .examples {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .example-btn {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .panel-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .btn {
+        margin: 5px;
+    }
+    
+    .status-bar {
+        flex-direction: column;
+        text-align: center;
+        gap: 5px;
+    }
 }
