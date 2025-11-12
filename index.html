@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Супер-редактор Python</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="header">
+        <h1>🐍 Супер-редактор Python</h1>
+        <p>Пишите код и сразу видите результат. Поддержка графики, игр и многое другое!</p>
+    </div>
+
+    <div class="examples">
+        <button class="example-btn" data-example="hello">👋 Привет, мир!</button>
+        <button class="example-btn" data-example="graphics">🎨 Графика Turtle</button>
+        <button class="example-btn" data-example="game">🎮 Простая игра</button>
+        <button class="example-btn" data-example="math">🧮 Математика</button>
+        <button class="example-btn" data-example="animation">✨ Анимация</button>
+    </div>
+
+    <div class="container">
+        <div class="editor-panel">
+            <div class="panel-header">
+                <div class="panel-title">✏️ РЕДАКТОР PYTHON</div>
+                <div>
+                    <button id="run-btn" class="btn">🚀 Запуск (Ctrl+Enter)</button>
+                    <button id="clear-btn" class="btn btn-secondary">🗑️ Очистить</button>
+                    <button id="theme-btn" class="theme-toggle">🌙 Тёмная тема</button>
+                </div>
+            </div>
+            <div class="editor-container">
+                <div class="line-numbers" id="line-numbers">1</div>
+                <textarea id="code-editor" spellcheck="false" placeholder="Введите код Python здесь..."># Простой пример Hello World
+print("Привет, мир!")
+
+# Работа с переменными
+name = "Пользователь"
+age = 25
+print(f"Меня зовут {name} и мне {age} лет")
+
+# Список и цикл
+fruits = ["яблоко", "банан", "апельсин"]
+for fruit in fruits:
+    print(f"Фрукт: {fruit}")</textarea>
+            </div>
+            <div class="console">
+                <div class="panel-title" style="margin-bottom: 10px;">📊 КОНСОЛЬ ВЫВОДА</div>
+                <div id="console-output" class="console-output"></div>
+            </div>
+        </div>
+        <div class="preview-panel">
+            <div class="panel-header">
+                <div class="panel-title">👁️ ПРЕДПРОСМОТР</div>
+                <div>
+                    <button id="fullscreen-btn" class="btn">📺 Полный экран</button>
+                    <button id="refresh-btn" class="btn btn-secondary">🔄 Обновить</button>
+                </div>
+            </div>
+            <div class="preview-container">
+                <div id="preview-output">
+                    <h3>Область предпросмотра</h3>
+                    <p>Запустите код Python, чтобы увидеть результат здесь.</p>
+                    <p>Вы можете создавать графику, игры, анимации и многое другое!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="status-bar">
+        <div>✅ Супер-редактор Python | Готов к работе</div>
+        <div id="status-info">Python 3.9 | Pyodide 0.21.3</div>
+    </div>
+
+    <div class="notification" id="notification">Код выполнен успешно!</div>
+
+    <div class="footer">
+        Супер-редактор Python &copy; 2023 | Создан с использованием HTML, CSS, JavaScript
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
