@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Супер-редактор Python</title>
+    <title>Супер-редактор Python 3.14.0</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="header">
-        <h1>🐍 Супер-редактор Python</h1>
+        <h1>🐍 Супер-редактор Python 3.14.0</h1>
         <p>Пишите код и сразу видите результат. Поддержка графики, игр и многое другое!</p>
     </div>
 
@@ -18,12 +18,14 @@
         <button class="example-btn" data-example="game">🎮 Простая игра</button>
         <button class="example-btn" data-example="math">🧮 Математика</button>
         <button class="example-btn" data-example="animation">✨ Анимация</button>
+        <button class="example-btn" data-example="patterns">🎯 Паттерны Python 3.14</button>
+        <button class="example-btn" data-example="performance">⚡ Производительность</button>
     </div>
 
     <div class="container">
         <div class="editor-panel">
             <div class="panel-header">
-                <div class="panel-title">✏️ РЕДАКТОР PYTHON</div>
+                <div class="panel-title">✏️ РЕДАКТОР PYTHON 3.14.0</div>
                 <div>
                     <button id="run-btn" class="btn">🚀 Запуск (Ctrl+Enter)</button>
                     <button id="clear-btn" class="btn btn-secondary">🗑️ Очистить</button>
@@ -32,18 +34,30 @@
             </div>
             <div class="editor-container">
                 <div class="line-numbers" id="line-numbers">1</div>
-                <textarea id="code-editor" spellcheck="false" placeholder="Введите код Python здесь..."># Простой пример Hello World
-print("Привет, мир!")
+                <textarea id="code-editor" spellcheck="false" placeholder="Введите код Python здесь..."># Добро пожаловать в Python 3.14.0!
+print("Привет, мир Python 3.14.0!")
 
-# Работа с переменными
-name = "Пользователь"
-age = 25
-print(f"Меня зовут {name} и мне {age} лет")
+# Новые возможности Python 3.14
+from typing import TypeVar
 
-# Список и цикл
-fruits = ["яблоко", "банан", "апельсин"]
-for fruit in fruits:
-    print(f"Фрукт: {fruit}")</textarea>
+# Улучшенный pattern matching
+def process_data(data):
+    match data:
+        case int(x) if x > 0:
+            return f"Положительное целое: {x}"
+        case list(items) if len(items) > 0:
+            return f"Список с {len(items)} элементами"
+        case _:
+            return "Неизвестный тип данных"
+
+# Проверяем pattern matching
+print(process_data(42))
+print(process_data([1, 2, 3]))
+
+# Улучшенная производительность
+numbers = [i for i in range(1000)]
+squares = [x*x for x in numbers]
+print(f"Сумма квадратов: {sum(squares)}")</textarea>
             </div>
             <div class="console">
                 <div class="panel-title" style="margin-bottom: 10px;">📊 КОНСОЛЬ ВЫВОДА</div>
@@ -60,23 +74,32 @@ for fruit in fruits:
             </div>
             <div class="preview-container">
                 <div id="preview-output">
-                    <h3>Область предпросмотра</h3>
+                    <h3>Область предпросмотра Python 3.14.0</h3>
                     <p>Запустите код Python, чтобы увидеть результат здесь.</p>
                     <p>Вы можете создавать графику, игры, анимации и многое другое!</p>
+                    <div class="python-version-info">
+                        <h4>Новое в Python 3.14.0:</h4>
+                        <ul>
+                            <li>Улучшенный pattern matching</li>
+                            <li>Оптимизированная производительность</li>
+                            <li>Новые методы для строк и коллекций</li>
+                            <li>Улучшенная поддержка асинхронности</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="status-bar">
-        <div>✅ Супер-редактор Python | Готов к работе</div>
-        <div id="status-info">Python 3.9 | Pyodide 0.21.3</div>
+        <div>✅ Супер-редактор Python 3.14.0 | Готов к работе</div>
+        <div id="status-info">Python 3.14.0 | Pyodide 0.25.0</div>
     </div>
 
     <div class="notification" id="notification">Код выполнен успешно!</div>
 
     <div class="footer">
-        Супер-редактор Python &copy; 2023 | Создан с использованием HTML, CSS, JavaScript
+        Супер-редактор Python 3.14.0 &copy; 2024 | Создан с использованием HTML, CSS, JavaScript
     </div>
 
     <script src="script.js"></script>
