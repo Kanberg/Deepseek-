@@ -84,7 +84,7 @@ print("Спасибо за игру!")`,
     math: `# Математические вычисления
 import math
 
-print("=== МАТЕМАТИЧЕСКИЕ ВЫЧИСЛЕНИЯ ===\\n")
+print("=== МАТЕМАТИЧЕСКИЕ ВЫЧИСЛЕНИЯ ===")
 
 # Основные операции
 a = 15
@@ -94,19 +94,19 @@ print(f"{a} - {b} = {a - b}")
 print(f"{a} * {b} = {a * b}")
 print(f"{a} / {b} = {a / b:.2f}")
 print(f"{a} // {b} = {a // b} (целочисленное деление)")
-print(f"{a} % {b} = {a % b} (остаток от деления)\\n")
+print(f"{a} % {b} = {a % b} (остаток от деления)")
 
 # Степени и корни
 print(f"{a} в квадрате = {a**2}")
 print(f"Квадратный корень из {a} = {math.sqrt(a):.2f}")
-print(f"{2} в степени {10} = {2**10}\\n")
+print(f"{2} в степени {10} = {2**10}")
 
 # Тригонометрия
 angle = 45
 radians = math.radians(angle)
 print(f"Синус {angle}° = {math.sin(radians):.2f}")
 print(f"Косинус {angle}° = {math.cos(radians):.2f}")
-print(f"Тангенс {angle}° = {math.tan(radians):.2f}\\n")
+print(f"Тангенс {angle}° = {math.tan(radians):.2f}")
 
 # Константы
 print(f"Число π = {math.pi:.5f}")
@@ -115,25 +115,13 @@ print(f"Число e = {math.e:.5f}")`,
     animation: `# Анимация с имитацией
 print("Запуск анимации...")
 
-frames = [
-    "🌕",
-    "🌖", 
-    "🌗",
-    "🌘",
-    "🌑",
-    "🌒",
-    "🌓",
-    "🌔"
-]
+frames = ["🌕", "🌖", "🌗", "🌘", "🌑", "🌒", "🌓", "🌔"]
 
 for i in range(3):
     for frame in frames:
-        print(f"\\rАнимация: {frame} ", end="", flush=True)
-        # Имитация задержки
-        import time
-        time.sleep(0.1)
-
-print("\\nАнимация завершена!")`
+        print(f"Анимация: {frame}")
+        
+print("Анимация завершена!")`
 };
 
 // Показ уведомления
@@ -190,40 +178,95 @@ function runCode() {
         // Очищаем предпросмотр
         previewOutput.innerHTML = '<h3>Результат выполнения кода:</h3>';
         
-        // Имитация выполнения Python кода
         let output = '';
-        const originalLog = console.log;
-        console.log = function(...args) {
-            output += args.join(' ') + '\n';
-            originalLog.apply(console, args);
-        };
+        let previewContent = '';
         
-        // Выполняем код (в реальной реализации здесь будет Pyodide)
-        if (code.includes('preview_html')) {
-            // Если код содержит HTML для предпросмотра
-            const htmlMatch = code.match(/preview_html = """([\s\S]*?)"""/);
-            if (htmlMatch) {
-                previewOutput.innerHTML = htmlMatch[1];
+        // Имитация выполнения Python кода
+        const lines = code.split('\n');
+        let inHtmlBlock = false;
+        let htmlContent = '';
+        
+        for (const line of lines) {
+            // Обработка HTML блока
+            if (line.includes('preview_html = """')) {
+                inHtmlBlock = true;
+                continue;
+            }
+            
+            if (inHtmlBlock) {
+                if (line.includes('"""')) {
+                    inHtmlBlock = false;
+                    previewContent = htmlContent;
+                    continue;
+                }
+                htmlContent += line + '\n';
+                continue;
+            }
+            
+            // Обработка print statements
+            if (line.includes('print(') && !line.startsWith('#')) {
+                // Обычные строки
+                const stringMatch = line.match(/print\(["']([^"']*)["']\)/);
+                if (stringMatch) {
+                    const text = stringMatch[1];
+                    output += text + '\n';
+                    previewContent += text + '<br>';
+                }
+                
+                // f-strings
+                const fstringMatch = line.match(/print\(f["']([^"']*)["']\)/);
+                if (fstringMatch) {
+                    const text = fstringMatch[1];
+                    output += text + '\n';
+                    previewContent += text + '<br>';
+                }
+                
+                // Переменные в print
+                const varMatch = line.match(/print\(([^)]+)\)/);
+                if (varMatch && !varMatch[1].includes('"') && !varMatch[1].includes("'")) {
+                    try {
+                        const result = eval(varMatch[1].replace(/f['"]/g, ''));
+                        output += String(result) + '\n';
+                        previewContent += String(result) + '<br>';
+                    } catch (e) {
+                        // Игнорируем ошибки вычисления
+                    }
+                }
+            }
+            
+            // Обработка переменных
+            if (line.includes('=') && !line.startsWith('#') && !line.includes('print') && !line.includes('import')) {
+                const varMatch = line.match(/(\w+)\s*=\s*(.+)/);
+                if (varMatch) {
+                    const varName = varMatch[1];
+                    let value = varMatch[2].trim();
+                    
+                    // Убираем комментарии
+                    value = value.split('#')[0].trim();
+                    
+                    if (value && !value.includes('"') && !value.includes("'") && !value.includes('[')) {
+                        try {
+                            const calculated = eval(value);
+                            previewContent += `<strong>${varName}</strong> = ${calculated}<br>`;
+                        } catch (e) {
+                            previewContent += `<strong>${varName}</strong> = ${value}<br>`;
+                        }
+                    }
+                }
             }
         }
         
-        // Имитируем выполнение Python кода
-        const lines = code.split('\n');
-        for (const line of lines) {
-            if (line.includes('print(') && !line.startsWith('#')) {
-                const match = line.match(/print\(["'](.*)["']\)/);
-                if (match) {
-                    output += match[1] + '\n';
-                }
-            }
+        // Если есть HTML контент, используем его
+        if (htmlContent) {
+            previewOutput.innerHTML = htmlContent;
+        } else if (previewContent) {
+            // Иначе показываем текстовый вывод
+            previewOutput.innerHTML += `<div style="background: #f5f5f5; padding: 15px; border-radius: 5px; margin-top: 10px; font-family: monospace; line-height: 1.5;">${previewContent}</div>`;
         }
         
         consoleOutput.textContent = output;
         statusInfo.textContent = "Python 3.9 | Выполнено";
         showNotification("Код выполнен успешно!");
-        
-        // Восстанавливаем console.log
-        console.log = originalLog;
         
     } catch (error) {
         consoleOutput.innerHTML += `<div class="console-error">Ошибка: ${error.message}</div>`;
